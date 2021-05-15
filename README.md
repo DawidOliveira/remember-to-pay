@@ -1,16 +1,58 @@
-# remember_to_pay
+<p align="center">Remember to Pay</p>
 
-A new Flutter project.
+ <p align="center">
+ <img src="https://img.shields.io/github/issues/dawidoliveira/remember-to-pay?style=for-the-badge"/>
+ <img src="https://img.shields.io/github/forks/dawidoliveira/remember-to-pay?style=for-the-badge"/>
+ <img src="https://img.shields.io/github/stars/dawidoliveira/remember-to-pay?style=for-the-badge"/>
+ <img src="https://img.shields.io/github/license/dawidoliveira/remember-to-pay?style=for-the-badge"/>
+ </p>
 
-## Getting Started
+## Descrição
+Remember to Pay é aplicativo mobile para notificar ao usuário o dia de pagar tal conta.
 
-This project is a starting point for a Flutter application.
+## ✅ Plugins do Vscode
 
-A few resources to get you started if this is your first Flutter project:
+- Dart
+- Dracula Oficial (tema, nao é obrigatorio esse, mas fica estiloso)
+- Flutter
+- Material Icon Theme
+- Dart Data Class Generator
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## ✅ Dependências do Projeto
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- cupertino_icons: ^1.0.2
+- shared_preferences: ^2.0.5
+- flutter_local_notifications: ^5.0.0+4
+- flutter_modular: ^3.2.1
+- intl: ^0.17.0
+- google_fonts: ^2.0.0
+- rx_notifier: ^1.1.0
+- uuid: ^3.0.4
+- cool_alert: ^1.1.0
+- timezone: ^0.7.0
+- android_alarm_manager: ^2.0.0
+
+## ✅  Instalação
+
+Necessário:
+
+- [Flutter](flutter.dev) 2.0.6 ou superior
+- Visual Studio Code ou Android Studio
+- Git
+- ❌ Não é necessário instalar Android SDK nem AVD. A partir do Flutter 2.0.6 existe a versão "Chrome" ou "Edge"
+
+Instalação
+
+```
+$ git clone https://github.com/DawidOliveira/remember-to-pay.git
+cd remember-to-pay
+code . 
+```
+
+Após abrir o Visual Studio Code, execute:
+```
+$ flutter pub get
+```
+aperte F5 para compilar e executar o projeto.
+
+Enjoy!
