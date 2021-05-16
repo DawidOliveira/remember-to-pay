@@ -1,5 +1,7 @@
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:remember_to_pay/app/repositories/note/note_repository.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 
 class NotificationService {
@@ -65,17 +67,22 @@ class NotificationService {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await NotificationService().flutterLocalNotificationsPlugin.show(
-          0,
-          'Olá rsrs',
-          'Você tem conta para pagar hoje, ta bom?!',
-          platformChannelSpecifics,
-        );
+    (await NoteRepository().getNotes()).forEach((element) async {
+      if (element.date.day == DateTime.now().day) {
+        await NotificationService().flutterLocalNotificationsPlugin.show(
+              0,
+              'Olá rsrs',
+              'Você tem conta para pagar hoje, ta bom?!',
+              platformChannelSpecifics,
+            );
+        return;
+      }
+    });
   }
 
   Future<void> sendNotification(String id, DateTime date) async {
     await AndroidAlarmManager.periodic(
-      Duration(days: 30),
+      Duration(days: 1),
       id.hashCode,
       showNotification,
       exact: true,
