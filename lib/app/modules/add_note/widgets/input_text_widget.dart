@@ -14,6 +14,8 @@ class InputTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller.desc,
+      validator: controller.validatorDesc,
+      textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Descrição do lembrete...',

@@ -6,6 +6,7 @@ import 'package:rx_notifier/rx_notifier.dart';
 import 'package:uuid/uuid.dart';
 
 class AddNoteController extends Disposable {
+  final formKey = GlobalKey<FormState>();
   final desc = TextEditingController();
   final dateText = TextEditingController();
   final date = RxNotifier<DateTime>(DateTime.now());
@@ -16,18 +17,27 @@ class AddNoteController extends Disposable {
   AddNoteController(this._homeController, this._noteService);
 
   Future<void> onSaved() async {
-    final note = await _noteService.addNote(
-      Uuid().v4(),
-      desc.text,
-      date.value,
-    );
-
-    if (note != null) {
-      _homeController.setNoteInList(
-        note,
+    if (formKey.currentState!.validate()) {
+      final note = await _noteService.addNote(
+        Uuid().v4(),
+        desc.text,
+        date.value,
       );
-      Modular.to.pop();
+
+      if (note != null) {
+        _homeController.setNoteInList(
+          note,
+        );
+        Modular.to.pop();
+      }
     }
+  }
+
+  String? validatorDesc(String? value) {
+    if (value == null || value.length < 1) {
+      return 'Descrição inválida';
+    }
+    return null;
   }
 
   @override

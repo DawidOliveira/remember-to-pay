@@ -14,17 +14,19 @@ class HomeContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          HeaderContentWidget(controller: controller),
-          SizedBox(
-            height: 20,
-          ),
-          ListNotesWidget(controller: controller)
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HeaderContentWidget(controller: controller),
+            SizedBox(
+              height: 20,
+            ),
+            ListNotesWidget(controller: controller)
+          ],
+        ),
       ),
     );
   }

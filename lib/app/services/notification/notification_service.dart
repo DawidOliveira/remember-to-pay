@@ -1,6 +1,5 @@
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:remember_to_pay/app/repositories/note/note_repository.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 
