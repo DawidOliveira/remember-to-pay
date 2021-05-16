@@ -1,7 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:intl/intl.dart';
 import 'package:remember_to_pay/app/shared/models/note.dart';
 
 import '../home_controller.dart';
@@ -35,6 +34,8 @@ class ItemNoteWidget extends StatelessWidget {
           type: CoolAlertType.warning,
           confirmBtnText: 'Apagar',
           cancelBtnText: 'Cancelar',
+          text: 'Tem certeza que deseja apagar?',
+          title: 'Eiiii!!!',
           animType: CoolAlertAnimType.slideInLeft,
           showCancelBtn: true,
           onCancelBtnTap: () {
@@ -57,9 +58,7 @@ class ItemNoteWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    DateFormat("dd 'de' MMMM", 'pt-BR')
-                        .format(note.date)
-                        .capitalizeFirstofEach,
+                    'Todo dia ${note.date.day}',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(

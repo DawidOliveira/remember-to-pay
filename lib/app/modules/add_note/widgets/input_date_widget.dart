@@ -25,7 +25,7 @@ class InputDateWidget extends StatelessWidget {
         if (selectedDate == null) return;
         controller.dateText.text =
             'Todo dia: ${DateFormat('dd').format(selectedDate)} você será notificado!';
-        controller.date.value = selectedDate;
+        controller.date.value = selectedDate.add(Duration(hours: 9));
       },
       child: TextFormField(
         controller: controller.dateText,

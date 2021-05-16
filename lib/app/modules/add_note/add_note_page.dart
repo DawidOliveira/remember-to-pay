@@ -3,8 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:remember_to_pay/app/core/core.dart';
 import 'package:remember_to_pay/app/modules/add_note/add_note_controller.dart';
 
-import 'widgets/input_date_widget.dart';
-import 'widgets/input_text_widget.dart';
+import 'widgets/form_content_widget.dart';
 
 class AddNotePage extends StatefulWidget {
   @override
@@ -47,33 +46,6 @@ class _AddNotePageState extends ModularState<AddNotePage, AddNoteController> {
         ],
       ),
       body: FormContentWidget(controller: controller),
-    );
-  }
-}
-
-class FormContentWidget extends StatelessWidget {
-  const FormContentWidget({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
-
-  final AddNoteController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Form(
-        child: Column(
-          children: [
-            InputTextWidget(controller: controller),
-            SizedBox(
-              height: 10,
-            ),
-            InputDateWidget(controller: controller)
-          ],
-        ),
-      ),
     );
   }
 }
