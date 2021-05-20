@@ -1,4 +1,5 @@
 import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:remember_to_pay/app/repositories/note/note_repository.dart';
 import 'package:rx_notifier/rx_notifier.dart';
@@ -66,7 +67,8 @@ class NotificationService {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    (await NoteRepository().getNotes()).forEach((element) async {
+    (await NoteRepository(FirebaseFirestore.instance).getNotes())
+        .forEach((element) async {
       if (element.date.day == DateTime.now().day) {
         await NotificationService().flutterLocalNotificationsPlugin.show(
               0,

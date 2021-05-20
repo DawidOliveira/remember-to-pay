@@ -20,7 +20,7 @@ class HomeController extends ChangeNotifier {
   }
 
   Future<void> init() async {
-    list.value = await _noteRepository.getNotes();
+    list.value = _noteRepository.notes.value;
   }
 
   void changeCurrentIndex(int value) => currentIndex.value = value;
