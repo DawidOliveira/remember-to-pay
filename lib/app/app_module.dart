@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:remember_to_pay/app/core/app_route.dart';
 import 'package:remember_to_pay/app/core/config.dart';
@@ -20,7 +21,7 @@ class AppModule extends Module {
     Bind.singleton(
         (i) => NoteService(FirebaseFirestore.instance, Connectivity(), i())),
     Bind.lazySingleton((i) => DrawerWidgetController()),
-    Bind.singleton((i) => NotificationService()),
+    Bind.singleton((i) => NotificationService(FirebaseMessaging.instance)),
   ];
 
   @override

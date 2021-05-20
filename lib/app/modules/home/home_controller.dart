@@ -27,7 +27,12 @@ class HomeController extends ChangeNotifier {
 
   void setNoteInList(NoteModel note) {
     list.value.add(note);
-    Modular.get<NotificationService>().sendNotification(note.id, note.date);
+    Modular.get<NotificationService>().sendNotification(
+      body: note.desc,
+      id: note.id,
+      title: 'Hey, você tem conta para pagar hoje!',
+      date: note.date,
+    );
     list.notifyListeners();
   }
 
