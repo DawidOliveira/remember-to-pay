@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Remember to Pay"
+        android:name="androidx.multidex.MultiDexApplication"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

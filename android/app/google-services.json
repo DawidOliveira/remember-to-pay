@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "538929396702",
+    "project_id": "remember-to-pay",
+    "storage_bucket": "remember-to-pay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538929396702:android:e422721c496a28a5febb4f",
+        "android_client_info": {
+          "package_name": "br.com.dawidoliveira.remember_to_pay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538929396702-77lhvjbq6jouehi7rfm9vpr134qpnbfp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.dawidoliveira.remember_to_pay",
+            "certificate_hash": "fb85aaa5b4affcd6ca4b5a41a9dacd7bf774f0c8"
+          }
+        },
+        {
+          "client_id": "538929396702-0rpa4c89ggecumleii6ok9qd5avgurl7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7IqC_8p4lQiq-VhBFeZ5yC_w_RlyIwc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538929396702-0rpa4c89ggecumleii6ok9qd5avgurl7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
