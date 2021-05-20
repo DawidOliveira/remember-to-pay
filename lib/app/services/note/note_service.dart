@@ -12,10 +12,10 @@ class NoteService implements INoteService {
   final NoteRepository _noteRepository;
 
   NoteService(this._firestore, this._connectivity, this._noteRepository) {
-    init();
+    persistData();
   }
 
-  void init() {
+  void persistData() {
     _connectivity.onConnectivityChanged.listen((event) async {
       if (event != ConnectivityResult.none) {
         (await _noteRepository.getNotes()).forEach((e) {
