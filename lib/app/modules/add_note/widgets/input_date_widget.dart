@@ -17,8 +17,8 @@ class InputDateWidget extends StatelessWidget {
       onTap: () async {
         final selectedDate = await showDatePicker(
           context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime.now(),
+          initialDate: DateTime.now().add(Duration(days: 1)),
+          firstDate: DateTime.now().add(Duration(days: 1)),
           lastDate: DateTime.now().add(Duration(days: 365)),
           initialDatePickerMode: DatePickerMode.day,
         );

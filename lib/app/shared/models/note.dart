@@ -1,32 +1,39 @@
 import 'dart:convert';
 
 class NoteModel {
-  final String id;
-  final String desc;
-  final DateTime date;
+  String id;
+  String desc;
+  DateTime date;
+  bool synced;
   NoteModel({
     required this.id,
     required this.desc,
     required this.date,
+    this.synced = false,
   });
 
   NoteModel copyWith({
     String? id,
     String? desc,
     DateTime? date,
+    bool? synced,
   }) {
     return NoteModel(
       id: id ?? this.id,
       desc: desc ?? this.desc,
       date: date ?? this.date,
+      synced: synced ?? this.synced,
     );
   }
+
+  void changeSynced(bool value) => this.synced = value;
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'desc': desc,
       'date': date.millisecondsSinceEpoch,
+      'synced': synced,
     };
   }
 
@@ -35,6 +42,7 @@ class NoteModel {
       id: map['id'],
       desc: map['desc'],
       date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+      synced: map['synced'],
     );
   }
 
@@ -44,7 +52,9 @@ class NoteModel {
       NoteModel.fromMap(json.decode(source));
 
   @override
-  String toString() => 'NoteModel(id: $id, desc: $desc, date: $date)';
+  String toString() {
+    return 'NoteModel(id: $id, desc: $desc, date: $date, synced: $synced)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -53,9 +63,12 @@ class NoteModel {
     return other is NoteModel &&
         other.id == id &&
         other.desc == desc &&
-        other.date == date;
+        other.date == date &&
+        other.synced == synced;
   }
 
   @override
-  int get hashCode => id.hashCode ^ desc.hashCode ^ date.hashCode;
+  int get hashCode {
+    return id.hashCode ^ desc.hashCode ^ date.hashCode ^ synced.hashCode;
+  }
 }
