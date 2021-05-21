@@ -27,52 +27,34 @@ class ItemNoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onLongPress: () async {
-        await CoolAlert.show(
-          context: context,
-          type: CoolAlertType.warning,
-          confirmBtnText: 'Apagar',
-          cancelBtnText: 'Cancelar',
-          text: 'Tem certeza que deseja apagar?',
-          title: 'Eiiii!!!',
-          animType: CoolAlertAnimType.slideInLeft,
-          showCancelBtn: true,
-          onCancelBtnTap: () {
-            Modular.to.pop();
-          },
-          onConfirmBtnTap: () {
-            controller.removeNote(note);
-            Modular.to.pop();
-          },
-        );
-      },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Todo dia ${note.date.day}',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    note.desc,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-              CircleAvatar(
-                backgroundColor: Colors.blue,
-                radius: 5,
-              )
-            ],
-          ),
+    return Material(
+      child: ListTile(
+        onLongPress: () async {
+          await CoolAlert.show(
+            context: context,
+            type: CoolAlertType.warning,
+            confirmBtnText: 'Apagar',
+            cancelBtnText: 'Cancelar',
+            text: 'Tem certeza que deseja apagar?',
+            title: 'Eiiii!!!',
+            animType: CoolAlertAnimType.slideInLeft,
+            showCancelBtn: true,
+            onCancelBtnTap: () {
+              Modular.to.pop();
+            },
+            onConfirmBtnTap: () {
+              controller.removeNote(note);
+              Modular.to.pop();
+            },
+          );
+        },
+        title: Text(
+          'Todo dia ${note.date.day}',
+          style: Theme.of(context).textTheme.subtitle2,
+        ),
+        subtitle: Text(
+          note.desc,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
       ),
     );
