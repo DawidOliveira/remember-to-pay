@@ -1,6 +1,8 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:remember_to_pay/app/modules/setting/setting_controller.dart';
+import 'package:remember_to_pay/app/modules/setting/widgets/section_tile_widget.dart';
 import 'package:remember_to_pay/app/shared/widgets/drawer_widget/drawer_widget.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 
@@ -33,19 +35,9 @@ class _SettingPageState extends ModularState<SettingPage, SettingController> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  minLeadingWidth: 5,
-                  leading: Icon(
-                    Icons.settings,
-                  ),
-                  title: Text(
-                    'Aplicativo',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-                Divider(
-                  height: 0,
+                SectionTileWidget(
+                  label: 'Aplicativo',
+                  icon: Icons.settings,
                 ),
                 RxBuilder(
                   builder: (context) => SwitchListTile.adaptive(
@@ -57,6 +49,29 @@ class _SettingPageState extends ModularState<SettingPage, SettingController> {
                     ),
                     onChanged: controller.changeDarkMode,
                   ),
+                ),
+                SectionTileWidget(
+                  label: 'Backup',
+                  icon: Icons.backup,
+                ),
+                ListTile(
+                  title: Text('Trazer os dados do banco de dados'),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                  onTap: () {
+                    CoolAlert.show(
+                      context: context,
+                      type: CoolAlertType.confirm,
+                      onConfirmBtnTap: () async {
+                        await controller.syncDB(context);
+                      },
+                      title: 'Você tem certeza?',
+                      text: 'Isso irá substituir os dados existentes.',
+                      cancelBtnText: 'Cancelar',
+                      onCancelBtnTap: () {
+                        Modular.to.pop();
+                      },
+                    );
+                  },
                 ),
               ],
             )

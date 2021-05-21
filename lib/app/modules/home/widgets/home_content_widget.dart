@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rx_notifier/rx_notifier.dart';
 
 import '../home_controller.dart';
 import 'header_content_widget.dart';
 import 'list_notes_widget.dart';
 
-class HomeContentWidget extends StatelessWidget {
+class HomeContentWidget extends StatefulWidget {
   const HomeContentWidget({
     Key? key,
     required this.controller,
@@ -13,18 +14,73 @@ class HomeContentWidget extends StatelessWidget {
   final HomeController controller;
 
   @override
+  _HomeContentWidgetState createState() => _HomeContentWidgetState();
+}
+
+class _HomeContentWidgetState extends State<HomeContentWidget>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(
+      length: 1,
+      vsync: this,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+        height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HeaderContentWidget(controller: controller),
-            SizedBox(
-              height: 20,
+            Container(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top,
+                left: 20.0,
+                right: 20.0,
+                bottom: 10.0,
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor.withOpacity(.5),
+                    Theme.of(context).primaryColor,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: HeaderContentWidget(
+                controller: widget.controller,
+              ),
             ),
-            ListNotesWidget(controller: controller)
+            RxBuilder(
+              builder: (context) => TabBar(
+                labelPadding: EdgeInsets.symmetric(vertical: 10),
+                controller: tabController,
+                indicatorColor: Colors.transparent,
+                tabs: [
+                  Tab(
+                    child: Text(
+                      'Lembretes (${widget.controller.list.value.length})',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  ListNotesWidget(controller: widget.controller),
+                ],
+              ),
+            ),
           ],
         ),
       ),

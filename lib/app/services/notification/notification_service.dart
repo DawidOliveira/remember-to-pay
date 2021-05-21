@@ -1,95 +1,148 @@
-import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:remember_to_pay/app/repositories/note/note_repository.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:remember_to_pay/app/services/notification/notification_service_interface.dart';
 import 'package:rx_notifier/rx_notifier.dart';
+import 'package:timezone/timezone.dart' as tz;
 
-class NotificationService {
+class NotificationService implements INotificationService {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  final AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'note',
+    'Note Remember',
+    'note remember',
+    importance: Importance.max,
+    priority: Priority.high,
+    showWhen: false,
+    enableVibration: true,
+    enableLights: true,
+    visibility: NotificationVisibility.public,
+  );
 
-  final id = RxNotifier<int>(0);
-  final title = RxNotifier<String>('title');
-  final body = RxNotifier<String>('body');
+  final FirebaseMessaging _fm;
 
-  void setId(int value) => id.value = value;
-  void setTitle(String value) => title.value = value;
-  void setBody(String value) => body.value = value;
+  final token = RxNotifier<String?>('');
 
-  void setInfoNotification(int id, String title, String body) {
-    setId(id);
-    setTitle(title);
-    setBody(body);
+  NotificationService(this._fm) {
+    init();
   }
 
-  Future<void> requestPermissions() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
+  Future<void> init() async {
+    await requestPermissions();
+    await getToken();
+    await listenNotifications();
+    const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('ic_launcher');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: androidInitializationSettings);
 
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-      requestSoundPermission: true,
-      requestBadgePermission: true,
-      requestAlertPermission: true,
-      onDidReceiveLocalNotification: (id, title, body, payload) async {
-        return '';
-      },
-    );
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-    );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
 
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onSelectNotification: (payload) async {
-        return '';
-      },
-    );
-  }
-
-  static Future<void> showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'note',
-      'Note Remember',
-      'note remember',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: false,
-      enableVibration: true,
-      enableLights: true,
-      visibility: NotificationVisibility.public,
-    );
-
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-
-    (await NoteRepository().getNotes()).forEach((element) async {
-      if (element.date.day == DateTime.now().day) {
-        await NotificationService().flutterLocalNotificationsPlugin.show(
-              0,
-              'Olá rsrs',
-              'Você tem conta para pagar hoje, ta bom?!',
-              platformChannelSpecifics,
-            );
-        return;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                androidPlatformChannelSpecifics.channelId,
+                androidPlatformChannelSpecifics.channelName,
+                androidPlatformChannelSpecifics.channelDescription,
+              ),
+            ));
       }
     });
   }
 
-  Future<void> sendNotification(String id, DateTime date) async {
-    await AndroidAlarmManager.periodic(
-      Duration(days: 1),
+  Future<void> sendNotification(
+      {required String id,
+      required String title,
+      required String body,
+      required DateTime date}) async {
+    final String currentTimeZone =
+        await FlutterNativeTimezone.getLocalTimezone();
+
+    final location = tz.getLocation(currentTimeZone);
+
+    await flutterLocalNotificationsPlugin
+        .zonedSchedule(
       id.hashCode,
-      showNotification,
-      exact: true,
-      startAt: date,
-    ).then((value) => print(value));
+      title,
+      body,
+      tz.TZDateTime.from(date, location),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          androidPlatformChannelSpecifics.channelId,
+          androidPlatformChannelSpecifics.channelName,
+          androidPlatformChannelSpecifics.channelDescription,
+        ),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    )
+        .then((_) async {
+      await Future.delayed(Duration(hours: 14));
+      await cancelNotification(id);
+      final newDate = DateTime(
+          date.day == 31 &&
+                  date.month == 12 &&
+                  date.hour == 23 &&
+                  date.minute == 59
+              ? date.year + 1
+              : date.year,
+          date.month == 12 ? 1 : date.month + 1,
+          date.day,
+          date.hour,
+          date.minute,
+          date.second);
+      await sendNotification(id: id, title: title, body: body, date: newDate);
+    });
   }
 
   Future<void> cancelNotification(String id) async {
-    await AndroidAlarmManager.cancel(id.hashCode).then((value) => print(value));
+    try {
+      await flutterLocalNotificationsPlugin.cancel(id.hashCode);
+    } catch (e) {
+      print('cancelNotification: $e');
+    }
+  }
+
+  Future<void> cancelAllNotifications() async {
+    try {
+      await flutterLocalNotificationsPlugin.cancelAll();
+    } catch (e) {
+      print('cancelAllNotifications: $e');
+    }
+  }
+
+  Future<void> requestPermissions() async {
+    NotificationSettings settings = await _fm.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    print('User granted permission: ${settings.authorizationStatus}');
+  }
+
+  Future<void> getToken() async {
+    token.value = await _fm.getToken();
+  }
+
+  Future<void> listenNotifications() async {
+    FirebaseMessaging.onMessage.listen((event) {
+      print(event.data);
+    });
   }
 }
