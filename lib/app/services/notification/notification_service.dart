@@ -1,10 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:remember_to_pay/app/services/notification/notification_service_interface.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-class NotificationService {
+class NotificationService implements INotificationService {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -22,20 +23,7 @@ class NotificationService {
 
   final FirebaseMessaging _fm;
 
-  final id = RxNotifier<int>(0);
-  final title = RxNotifier<String>('title');
-  final body = RxNotifier<String>('body');
   final token = RxNotifier<String?>('');
-
-  void setId(int value) => id.value = value;
-  void setTitle(String value) => title.value = value;
-  void setBody(String value) => body.value = value;
-
-  void setInfoNotification(int id, String title, String body) {
-    setId(id);
-    setTitle(title);
-    setBody(body);
-  }
 
   NotificationService(this._fm) {
     init();
@@ -123,6 +111,14 @@ class NotificationService {
       await flutterLocalNotificationsPlugin.cancel(id.hashCode);
     } catch (e) {
       print('cancelNotification: $e');
+    }
+  }
+
+  Future<void> cancelAllNotifications() async {
+    try {
+      await flutterLocalNotificationsPlugin.cancelAll();
+    } catch (e) {
+      print('cancelAllNotifications: $e');
     }
   }
 

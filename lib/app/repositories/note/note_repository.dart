@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:remember_to_pay/app/repositories/note/note_repository_interface.dart';
+import 'package:remember_to_pay/app/services/notification/notification_service.dart';
 import 'package:remember_to_pay/app/shared/models/note.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,8 +10,9 @@ class NoteRepository extends ChangeNotifier implements INoteRepository {
   SharedPreferences? _ps;
   final FirebaseFirestore _firestore;
   final notes = RxNotifier<List<NoteModel>>([]);
+  final NotificationService _notificationService;
 
-  NoteRepository(this._firestore) {
+  NoteRepository(this._firestore, this._notificationService) {
     init();
   }
 
@@ -60,7 +62,10 @@ class NoteRepository extends ChangeNotifier implements INoteRepository {
   Future<void> getNotesDBBackup() async {
     try {
       List<NoteModel> listAux = [];
-      (await _firestore.collection('notes').get()).docs.forEach((element) {
+      await _notificationService.cancelAllNotifications();
+      (await _firestore.collection('notes').get())
+          .docs
+          .forEach((element) async {
         listAux.add(
           NoteModel(
             id: element.id,
@@ -69,6 +74,14 @@ class NoteRepository extends ChangeNotifier implements INoteRepository {
                     (element['date'] as Timestamp).nanoseconds)
                 .toDate(),
           ),
+        );
+        await _notificationService.sendNotification(
+          id: element.id,
+          title: 'Hey, você tem conta para pagar hoje!',
+          body: element['desc'],
+          date: Timestamp((element['date'] as Timestamp).seconds,
+                  (element['date'] as Timestamp).nanoseconds)
+              .toDate(),
         );
       });
       await _ps!

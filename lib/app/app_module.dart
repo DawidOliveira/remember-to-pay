@@ -17,11 +17,11 @@ class AppModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.singleton((i) => Config()),
-    Bind.singleton((i) => NoteRepository(FirebaseFirestore.instance)),
+    Bind.singleton((i) => NotificationService(FirebaseMessaging.instance)),
+    Bind.singleton((i) => NoteRepository(FirebaseFirestore.instance, i())),
     Bind.singleton(
         (i) => NoteService(FirebaseFirestore.instance, Connectivity(), i())),
     Bind.lazySingleton((i) => DrawerWidgetController()),
-    Bind.singleton((i) => NotificationService(FirebaseMessaging.instance)),
   ];
 
   @override
