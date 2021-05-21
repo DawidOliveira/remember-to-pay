@@ -31,12 +31,17 @@ Remember to Pay é aplicativo mobile para notificar ao usuário o dia de pagar t
 - cool_alert: ^1.1.0
 - timezone: ^0.7.0
 - android_alarm_manager: ^2.0.0
+- cloud_firestore: ^2.2.0
+- firebase_messaging: ^10.0.0
+- firebase_core: ^1.2.0
+- connectivity: ^3.0.4
+- flutter_native_timezone: ^1.0.10
 
 ## ✅  Instalação
 
 Necessário:
 
-- [Flutter](flutter.dev) 2.0.6 ou superior
+- [Flutter](https://flutter.dev) 2.0.6 ou superior
 - Visual Studio Code ou Android Studio
 - Git
 - ❌ Não é necessário instalar Android SDK nem AVD. A partir do Flutter 2.0.6 existe a versão "Chrome" ou "Edge"
