@@ -4,11 +4,16 @@ import 'package:remember_to_pay/app/core/app_colors.dart';
 
 class AppTheme {
   static ThemeData themeLight = ThemeData.light().copyWith(
-    brightness: Brightness.light,
+    brightness: Brightness.dark,
     textTheme: GoogleFonts.poppinsTextTheme().copyWith(
       headline6: GoogleFonts.poppins(
         fontSize: 26,
         color: AppColors.DARK_COLOR,
+      ),
+      headline4: GoogleFonts.poppins(
+        fontWeight: FontWeight.bold,
+        color: AppColors.DARK_COLOR,
+        fontSize: 18,
       ),
       overline: GoogleFonts.poppins(
         color: AppColors.DARK_COLOR,
@@ -42,7 +47,7 @@ class AppTheme {
         color: AppColors.DARK_COLOR,
       ),
     ),
-    scaffoldBackgroundColor: AppColors.SCAFFOLD_BACKGROUND_COLOR,
+    scaffoldBackgroundColor: AppColors.WHITE,
   );
 
   static ThemeData themeDark = ThemeData.dark().copyWith(
@@ -52,10 +57,18 @@ class AppTheme {
         fontSize: 26,
         color: AppColors.WHITE,
       ),
+      headline5: GoogleFonts.poppins(
+        color: AppColors.WHITE,
+      ),
       overline: GoogleFonts.poppins(
         color: AppColors.WHITE,
         fontSize: 12,
         fontWeight: FontWeight.w400,
+      ),
+      headline4: GoogleFonts.poppins(
+        fontWeight: FontWeight.bold,
+        color: AppColors.WHITE,
+        fontSize: 18,
       ),
       subtitle1: GoogleFonts.poppins(
         color: AppColors.WHITE,

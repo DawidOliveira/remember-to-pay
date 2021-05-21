@@ -15,13 +15,14 @@ class ListNotesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color:
-          controller.config.theme.value == 0 ? Colors.grey[100] : Colors.grey,
-      padding: const EdgeInsets.all(5),
       child: RxBuilder(
-        builder: (context) => ListView.builder(
+        builder: (context) => ListView.separated(
+          padding: EdgeInsets.zero,
           itemCount: controller.list.value.length,
           shrinkWrap: true,
+          separatorBuilder: (context, index) => Divider(
+            height: 0,
+          ),
           itemBuilder: (context, index) {
             final note = controller.list.value[index];
             return ItemNoteWidget(controller: controller, note: note);
