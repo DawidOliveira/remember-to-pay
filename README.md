@@ -37,6 +37,24 @@ Remember to Pay é aplicativo mobile para notificar ao usuário o dia de pagar t
 - flutter_native_timezone: ^1.0.10
 - table_calendar: ^3.0.0
 
+## ✅ Telas (Light Mode)
+
+- [Home Page](screenshots/light_mode/home_page.png)
+- [New Note Page](screenshots/light_mode/new_note_page.png)
+- [Settings Page](screenshots/light_mode/settings_page.png)
+- [Menu](screenshots/light_mode/menu.png)
+- [Alert delete note](screenshots/light_mode/alert_01.png)
+- [Alert backup](screenshots/light_mode/alert_02.png)
+
+## ✅ Telas (Dark Mode)
+
+- [Home Page](screenshots/dark_mode/home_page.png)
+- [New Note Page](screenshots/dark_mode/new_note_page.png)
+- [Settings Page](screenshots/dark_mode/settings_page.png)
+- [Menu](screenshots/dark_mode/menu.png)
+- [Alert delete note](screenshots/dark_mode/alert_01.png)
+- [Alert backup](screenshots/dark_mode/alert_02.png)
+
 ## ✅  Instalação
 
 Necessário:
