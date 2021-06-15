@@ -8,7 +8,7 @@ import 'package:remember_to_pay/app/modules/setting/setting_page.dart';
 class HomeModule extends Module {
   @override
   final List<Bind> binds = [
-    Bind.lazySingleton((i) => HomeController(i(), i(), i())),
+    Bind.singleton((i) => HomeController(i(), i(), i())),
   ];
 
   @override

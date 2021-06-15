@@ -32,9 +32,14 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Icon(
-              Icons.calendar_today,
-              color: AppColors.WHITE,
+            child: IconButton(
+              icon: Icon(
+                Icons.exit_to_app,
+                color: AppColors.WHITE,
+              ),
+              onPressed: () async {
+                await controller.signOut();
+              },
             ),
           )
         ],

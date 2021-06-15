@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "538929396702-bkseab3r36ou1jnj1e8b5nj9lhhnethv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.dawidoliveira.remember_to_pay",
+            "certificate_hash": "179fc08ab9a9ebe670a8da94c841d3b53935635e"
+          }
+        },
+        {
           "client_id": "538929396702-0rpa4c89ggecumleii6ok9qd5avgurl7.apps.googleusercontent.com",
           "client_type": 3
         }

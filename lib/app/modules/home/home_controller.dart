@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:remember_to_pay/app/core/config.dart';
 import 'package:remember_to_pay/app/repositories/note/note_repository.dart';
-import 'package:remember_to_pay/app/services/note/note_service.dart';
+import 'package:remember_to_pay/app/services/auth/auth_service.dart';
 import 'package:remember_to_pay/app/services/notification/notification_service.dart';
 import 'package:remember_to_pay/app/shared/models/note.dart';
 import 'package:rx_notifier/rx_notifier.dart';
@@ -10,12 +10,12 @@ import 'package:rx_notifier/rx_notifier.dart';
 class HomeController extends ChangeNotifier {
   final Config config;
   final NoteRepository _noteRepository;
-  final NoteService _noteService;
+  final AuthService _authService;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final list = RxNotifier<List<NoteModel>>([]);
   final currentIndex = RxNotifier<int>(0);
 
-  HomeController(this.config, this._noteRepository, this._noteService) {
+  HomeController(this.config, this._noteRepository, this._authService) {
     init();
   }
 
@@ -36,8 +36,12 @@ class HomeController extends ChangeNotifier {
     list.notifyListeners();
   }
 
+  Future<void> signOut() async {
+    await _authService.signOut();
+  }
+
   Future<void> removeNote(NoteModel note) async {
-    final response = await _noteService.removeNote(note.id);
+    final response = await _noteRepository.removeNote(note.id);
     if (response != null) {
       list.value.remove(response);
       Modular.get<NotificationService>().cancelNotification(note.id);

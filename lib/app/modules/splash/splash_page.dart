@@ -19,8 +19,19 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
             ? AppColors.WHITE
             : AppColors.DARK_COLOR,
         body: Center(
-          child: FlutterLogo(
-            size: 60,
+          child: RxBuilder(
+            builder: (_) => AnimatedContainer(
+              duration:
+                  Duration(milliseconds: controller.durationInMilliseconds),
+              width: controller.widthLogo.value,
+              curve: Curves.bounceOut,
+              child: Image.asset(
+                Modular.get<Config>().theme.value == 0
+                    ? 'assets/images/logo.png'
+                    : 'assets/images/logo-white.png',
+                width: double.infinity,
+              ),
+            ),
           ),
         ),
       ),
