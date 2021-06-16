@@ -46,7 +46,8 @@ class AuthService implements IAuthService {
     }
   }
 
-  Future<void> signin({required String email, required String password}) async {
+  Future<dynamic> signin(
+      {required String email, required String password}) async {
     try {
       final value = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -67,7 +68,8 @@ class AuthService implements IAuthService {
       );
       Modular.to.pushReplacementNamed('/home');
     } catch (e) {
-      throw e;
+      print('signin $e');
+      return e;
     }
   }
 

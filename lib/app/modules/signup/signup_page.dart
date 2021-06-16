@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:remember_to_pay/app/core/config.dart';
 import 'package:remember_to_pay/app/modules/signup/signup_controller.dart';
 import 'package:remember_to_pay/app/modules/signup/widgets/input_signup_widget.dart';
+import 'package:rx_notifier/rx_notifier.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -12,13 +12,18 @@ class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends ModularState<SignUpPage, SignUpController> {
+class _SignUpPageState extends ModularState<SignUpPage, SignUpController>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
       ),
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
@@ -34,9 +39,7 @@ class _SignUpPageState extends ModularState<SignUpPage, SignUpController> {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * .4,
                       child: Image.asset(
-                        Modular.get<Config>().theme.value == 0
-                            ? 'assets/images/logo.png'
-                            : 'assets/images/logo-white.png',
+                        'assets/images/logo.png',
                         width: double.infinity,
                       ),
                     ),
@@ -50,7 +53,10 @@ class _SignUpPageState extends ModularState<SignUpPage, SignUpController> {
                         children: [
                           Text(
                             'CADASTRE-SE',
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4!
+                                .copyWith(color: Colors.black),
                           ),
                           SizedBox(
                             height: 30,
@@ -96,16 +102,38 @@ class _SignUpPageState extends ModularState<SignUpPage, SignUpController> {
                           SizedBox(
                             height: 30,
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await controller.signUp();
-                              },
-                              child: Text(
-                                'CADASTRAR',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                          Center(
+                            child: RxBuilder(
+                              builder: (_) => AnimatedSize(
+                                duration: Duration(milliseconds: 300),
+                                vsync: this,
+                                curve: Curves.linear,
+                                child: SizedBox(
+                                  width: controller.widthButton.value,
+                                  height: 45,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      await controller.signUp(context);
+                                    },
+                                    child: !controller.loading.value
+                                        ? Text(
+                                            'CADASTRAR',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation(
+                                                        Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),

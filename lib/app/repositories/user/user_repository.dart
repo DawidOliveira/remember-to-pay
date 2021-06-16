@@ -27,7 +27,7 @@ class UserRepository implements IUserRepository {
     }
   }
 
-  Future<void> signUp({
+  Future<dynamic> signUp({
     required String name,
     required String email,
     required String password,
@@ -42,7 +42,8 @@ class UserRepository implements IUserRepository {
       await saveLocalUser(email: email, id: value.user!.uid, name: name);
       Modular.to.pushReplacementNamed('/home');
     } catch (e) {
-      throw e;
+      print('signUp $e');
+      return e;
     }
   }
 

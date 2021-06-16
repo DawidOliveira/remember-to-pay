@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:remember_to_pay/app/core/config.dart';
 import 'package:remember_to_pay/app/core/core.dart';
 import 'package:remember_to_pay/app/modules/login/widgets/input_login_widget.dart';
+import 'package:rx_notifier/rx_notifier.dart';
 
 import 'login_controller.dart';
 
@@ -14,10 +15,12 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ModularState<LoginPage, LoginController> {
+class _LoginPageState extends ModularState<LoginPage, LoginController>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -32,9 +35,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * .4,
                       child: Image.asset(
-                        Modular.get<Config>().theme.value == 0
-                            ? 'assets/images/logo.png'
-                            : 'assets/images/logo-white.png',
+                        'assets/images/logo.png',
                         width: double.infinity,
                       ),
                     ),
@@ -48,7 +49,10 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                         children: [
                           Text(
                             'FAÇA O LOGIN',
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4!
+                                .copyWith(color: Colors.black),
                           ),
                           SizedBox(
                             height: 30,
@@ -93,16 +97,38 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                           SizedBox(
                             height: 10,
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await controller.signIn();
-                              },
-                              child: Text(
-                                'ACESSAR',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                          Center(
+                            child: RxBuilder(
+                              builder: (_) => AnimatedSize(
+                                duration: Duration(milliseconds: 200),
+                                vsync: this,
+                                curve: Curves.linear,
+                                child: Container(
+                                  width: controller.widthButton.value,
+                                  height: 45,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      await controller.signIn(context);
+                                    },
+                                    child: !controller.loading.value
+                                        ? Text(
+                                            'ACESSAR',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation(
+                                                        Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
