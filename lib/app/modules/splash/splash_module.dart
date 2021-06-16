@@ -7,7 +7,7 @@ import 'package:remember_to_pay/app/modules/splash/splash_page.dart';
 class SplashModule extends Module {
   @override
   final List<Bind> binds = [
-    Bind.factory((i) => SplashController()),
+    Bind.factory((i) => SplashController(i())),
   ];
 
   @override
