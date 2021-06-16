@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:remember_to_pay/app/core/app_route.dart';
 import 'package:remember_to_pay/app/core/config.dart';
+import 'package:remember_to_pay/app/modules/forgot_password/forgot_password_module.dart';
 import 'package:remember_to_pay/app/modules/home/home_module.dart';
 import 'package:remember_to_pay/app/modules/login/login_module.dart';
 import 'package:remember_to_pay/app/modules/setting/setting_module.dart';
@@ -41,5 +42,6 @@ class AppModule extends Module {
     ModuleRoute(AppRoute.HOME, module: HomeModule()),
     ModuleRoute(AppRoute.LOGIN, module: LoginModule()),
     ModuleRoute(AppRoute.SIGNUP, module: SignupModule()),
+    ModuleRoute(AppRoute.FORGOT_PASSWORD, module: ForgotPasswordModule()),
   ];
 }

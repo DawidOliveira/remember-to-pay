@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:remember_to_pay/app/modules/signup/signup_controller.dart';
-import 'package:remember_to_pay/app/modules/signup/widgets/form_signup_widget.dart';
-import 'package:remember_to_pay/app/modules/signup/widgets/logo_widget.dart';
+import 'package:remember_to_pay/app/modules/forgot_password/forgot_password_controller.dart';
+import 'package:remember_to_pay/app/modules/forgot_password/widgets/form_forgot_password_widget.dart';
+import 'package:remember_to_pay/app/modules/forgot_password/widgets/logo_widget.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
 
-class _SignUpPageState extends ModularState<SignUpPage, SignUpController>
+class _ForgotPasswordPageState
+    extends ModularState<ForgotPasswordPage, ForgotPasswordController>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
@@ -37,9 +38,7 @@ class _SignUpPageState extends ModularState<SignUpPage, SignUpController>
                   LogoWidget(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: FormSignupWidget(
-                      controller: controller,
-                    ),
+                    child: FormForgotPasswordWidget(controller: controller),
                   ),
                 ],
               ),
