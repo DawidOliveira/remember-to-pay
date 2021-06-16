@@ -32,6 +32,15 @@ class AuthService implements IAuthService {
     }
   }
 
+  Future<dynamic> sendEmailForgotPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print('sendEmailForgotPassword $e');
+      return e;
+    }
+  }
+
   Future<void> signinWithGoogle() async {
     try {
       final value = await _googleSignIn.signIn();
